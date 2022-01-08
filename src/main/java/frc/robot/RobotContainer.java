@@ -6,8 +6,11 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.commands.autonomous.AutoDriveForward;
+import frc.robot.commands.drivetrain.ArcadeDrive;
+import frc.robot.commands.drivetrain.CurvatureDrive;
+import frc.robot.commands.drivetrain.TankDrive;
+import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /**
@@ -18,14 +21,44 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private final Drivetrain m_drivetrain = new Drivetrain();
 
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  private final AutoDriveForward m_autoDriveForward = new AutoDriveForward();
+
+  // Define an XboxController object to control the robot with.
+  private final XboxController m_driveController = new XboxController(Constants.DRIVE_CONTROLLER);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    // Configure the button bindings
+    // Configure the button bindings.
     configureButtonBindings();
+
+    // Set the drive controls to arcade.
+    m_drivetrain.setDefaultCommand(
+      new ArcadeDrive(
+        m_drivetrain, 
+        () -> m_driveController.getLeftY(),
+        () -> m_driveController.getRightX()
+      )
+    );
+
+    // // Set the drive controls to tank.
+    // m_drivetrain.setDefaultCommand(
+    //   new TankDrive(
+    //     m_drivetrain, 
+    //     () -> m_driveController.getLeftY(),
+    //     () -> m_driveController.getRightX()
+    //   )
+    // );
+
+    // // Set the drive controls to curvature.
+    // m_drivetrain.setDefaultCommand(
+    //   new CurvatureDrive(
+    //     m_drivetrain, 
+    //     () -> m_driveController.getLeftY(),
+    //     () -> m_driveController.getRightX()
+    //   )
+    // );
   }
 
   /**
@@ -43,6 +76,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    return m_autoDriveForward;
   }
 }

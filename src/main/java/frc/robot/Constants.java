@@ -12,4 +12,13 @@ package frc.robot;
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
-public final class Constants {}
+public final class Constants {
+    // Define the port being used by the driver's controller.
+    public static final int DRIVE_CONTROLLER = 0;
+
+    // Define the ports being used by the drivetrain motors.
+    public static final int DRIVE_FRONT_LEFT = 0;
+    public static final int DRIVE_FRONT_RIGHT = 1;
+    public static final int DRIVE_REAR_LEFT = 2;
+    public static final int DRIVE_REAR_RIGHT = 3;
+}
