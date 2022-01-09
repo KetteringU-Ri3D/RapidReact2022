@@ -16,7 +16,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
  */
 public class ArcadeDrive extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
+  
+  // Create an object for the drivetrain.
   private final Drivetrain m_drivetrain;
+
+  // Create two DoubleSuppliers for the power being applied to the motors.
   private final DoubleSupplier m_throttle, m_rotation;
 
   /**
@@ -25,15 +29,15 @@ public class ArcadeDrive extends CommandBase {
    * @param drivetrain The subsystem used by this command.
    */
   public ArcadeDrive(Drivetrain drivetrain, DoubleSupplier throttle, DoubleSupplier rotation) {
-    // Set the drivetrain argument to the Drivetrain subsystem.
+    // Use the Drivetrain subsystem to gain access to its commands.
     m_drivetrain = drivetrain;
 
-    // Set the throttle and rotation to those being modified in this command.
+    // Apply power to the motors.
     m_throttle = throttle;
     m_rotation = rotation;
 
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(drivetrain);
+    addRequirements(m_drivetrain);
   }
 
   // Called when the command is initially scheduled.
@@ -51,7 +55,7 @@ public class ArcadeDrive extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     // Use the stopDrive method from the Drivetrain subsystem.
-    m_drivetrain.stopDrive();
+    m_drivetrain.stop();
   }
 
   // Returns true when the command should end.

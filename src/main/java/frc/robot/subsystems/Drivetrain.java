@@ -30,11 +30,11 @@ public class Drivetrain extends SubsystemBase {
   
   /** Creates a new Drivetrain */
   public Drivetrain() {
-    // // Set all motors to Brake mode.
-    // motorFrontLeft.setIdleMode(IdleMode.kBrake);
-    // motorFrontRight.setIdleMode(IdleMode.kBrake);
-    // motorRearLeft.setIdleMode(IdleMode.kBrake);
-    // motorRearRight.setIdleMode(IdleMode.kBrake);
+    // Set all motors to Brake mode.
+    motorFrontLeft.setIdleMode(IdleMode.kBrake);
+    motorFrontRight.setIdleMode(IdleMode.kBrake);
+    motorRearLeft.setIdleMode(IdleMode.kBrake);
+    motorRearRight.setIdleMode(IdleMode.kBrake);
 
     // Invert the right motors.
     motorFrontRight.setInverted(true);
@@ -42,9 +42,12 @@ public class Drivetrain extends SubsystemBase {
   }
 
   /**
-   * ArcadeDrive - drivetrain control with "arcade" controls.
+   * arcadeDrive - drivetrain control with "arcade" controls.
    * 
    * Left Y-axis controls throttle, Right X-axis controls rotation.
+   * 
+   * @param throttle Forward/backward speed of the motors
+   * @param rotation Rotational speed of the motors
    */
   public void arcadeDrive(double throttle, double rotation) {
     // Call DifferentialDrive's arcadeDrive method.
@@ -52,9 +55,12 @@ public class Drivetrain extends SubsystemBase {
   }
   
   /**
-   * TankDrive - drivetrain control with "tank" controls.
+   * tankDrive - drivetrain control with "tank" controls.
    * 
    * Left Y-axis controls the left side, right Y-axis controls the right side.
+   * 
+   * @param left Voltage applied to the left motors.
+   * @param right Voltage applied to the right motors.
    */
   public void tankDrive(double left, double right) {
     // Call DifferentialDrive's tankDrive method.
@@ -62,12 +68,15 @@ public class Drivetrain extends SubsystemBase {
   }
 
   /**
-   * CurvatureDrive - drivetrain control with "curvature" or "cheesy" controls.
+   * curvatureDrive - drivetrain control with "curvature" or "cheesy" controls.
    * 
    * Changing the rotation modifies the rate of heading, making the drivetrain
    * operate more like a car.
    * 
    * Left Y-axis controls throttle, Right X-axis controls rotation.
+   * 
+   * @param throttle Forward/backward speed of the motors
+   * @param rotation Rotational speed of the motors
    */
   public void curvatureDrive(double throttle, double rotation) {
     // Call DifferentialDrive's curvatureDrive method.
@@ -75,19 +84,14 @@ public class Drivetrain extends SubsystemBase {
   }
 
   /**
-   * StopDrive - stops all motors on the drivetrain.
+   * stopDrive - stops all motors on the drivetrain.
    */
-  public void stopDrive() {
+  public void stop() {
     drive.stopMotor();
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-  }
-
-  @Override
-  public void simulationPeriodic() {
-    // This method will be called once per scheduler run during simulation
   }
 }
