@@ -47,7 +47,7 @@ public class RobotContainer {
     //   new TankDrive(
     //     m_drivetrain, 
     //     () -> m_driveController.getLeftY(),
-    //     () -> m_driveController.getRightX()
+    //     () -> m_driveController.getRightY()
     //   )
     // );
 

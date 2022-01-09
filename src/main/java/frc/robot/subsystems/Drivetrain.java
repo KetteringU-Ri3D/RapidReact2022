@@ -16,8 +16,8 @@ import frc.robot.Constants;
 public class Drivetrain extends SubsystemBase {
   // Create CANSparkMax objects to control the motors on the drivetrain.
   CANSparkMax motorFrontLeft = new CANSparkMax(Constants.DRIVE_FRONT_LEFT, MotorType.kBrushless);
-  CANSparkMax motorFrontRight = new CANSparkMax(Constants.DRIVE_FRONT_RIGHT, MotorType.kBrushless);
   CANSparkMax motorRearLeft = new CANSparkMax(Constants.DRIVE_REAR_LEFT, MotorType.kBrushless);
+  CANSparkMax motorFrontRight = new CANSparkMax(Constants.DRIVE_FRONT_RIGHT, MotorType.kBrushless);
   CANSparkMax motorRearRight = new CANSparkMax(Constants.DRIVE_REAR_RIGHT, MotorType.kBrushless);
 
   // Create MotorControllerGroup objects to use the defined motors in a DifferentialDrive class.
@@ -30,11 +30,11 @@ public class Drivetrain extends SubsystemBase {
   
   /** Creates a new Drivetrain */
   public Drivetrain() {
-    // Set all motors to Brake mode.
-    motorFrontLeft.setIdleMode(IdleMode.kBrake);
-    motorFrontRight.setIdleMode(IdleMode.kBrake);
-    motorRearLeft.setIdleMode(IdleMode.kBrake);
-    motorRearRight.setIdleMode(IdleMode.kBrake);
+    // // Set all motors to Brake mode.
+    // motorFrontLeft.setIdleMode(IdleMode.kBrake);
+    // motorFrontRight.setIdleMode(IdleMode.kBrake);
+    // motorRearLeft.setIdleMode(IdleMode.kBrake);
+    // motorRearRight.setIdleMode(IdleMode.kBrake);
 
     // Invert the right motors.
     motorFrontRight.setInverted(true);
