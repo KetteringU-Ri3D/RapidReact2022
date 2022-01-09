@@ -33,8 +33,8 @@ public class Shooter extends SubsystemBase {
    */
   public void spinUp(double power) {
     // Apply the voltage to both motors. Note that the right motor is inverted.
-    motorLeft.set(ControlMode.PercentOutput, power);
-    motorRight.set(ControlMode.PercentOutput, power);
+    motorLeft.set(ControlMode.PercentOutput, -power);
+    motorRight.set(ControlMode.PercentOutput, -power);
   }
 
   /**
@@ -44,8 +44,8 @@ public class Shooter extends SubsystemBase {
    */
   public void spinDown(double power) {
     // Apply the voltage to both motors. Note that the right motor is inverted.
-    motorLeft.set(ControlMode.PercentOutput, -power);
-    motorRight.set(ControlMode.PercentOutput, -power);
+    motorLeft.set(ControlMode.PercentOutput, power);
+    motorRight.set(ControlMode.PercentOutput, power);
   }
 
   /**

@@ -24,5 +24,5 @@ public final class Constants {
 
     // Define the CAN IDs being used by the shooter motors.
     public static final int SHOOTER_LEFT = 5;
-    public static final int SHOOTER_RIGHT = 5;
+    public static final int SHOOTER_RIGHT = 6;
 }

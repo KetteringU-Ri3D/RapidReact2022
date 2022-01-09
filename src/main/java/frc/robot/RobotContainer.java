@@ -72,8 +72,15 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // Spin the shooter up when the A button is pressed.
-    new JoystickButton(m_driveController, Button.kA.value).whenPressed(() -> m_shooter.spinUp(0.5));
+    // Spin the shooter wheels up when the A button is pressed.
+    new JoystickButton(m_driveController, Button.kA.value)
+      .whenPressed(() -> m_shooter.spinUp(0.7))
+      .whenReleased(() -> m_shooter.stop());
+
+    // Spin the shooter wheels down when the B button is pressed.
+    new JoystickButton(m_driveController, Button.kB.value)
+      .whenPressed(() -> m_shooter.spinDown(0.4))
+      .whenReleased(() -> m_shooter.stop());
   }
 
   /**
