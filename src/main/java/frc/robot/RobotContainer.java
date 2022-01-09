@@ -11,7 +11,9 @@ import frc.robot.commands.autonomous.AutoDriveForward;
 import frc.robot.commands.drivetrain.ArcadeDrive;
 import frc.robot.commands.drivetrain.CurvatureDrive;
 import frc.robot.commands.drivetrain.TankDrive;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -26,6 +28,8 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Drivetrain m_drivetrain = new Drivetrain();
   private final Shooter m_shooter = new Shooter();
+  private final Intake m_intake = new Intake();
+  private final Climber m_climber = new Climber();
 
   private final AutoDriveForward m_autoDriveForward = new AutoDriveForward();
 
@@ -72,15 +76,31 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // Spin the shooter wheels up when the A button is pressed.
-    new JoystickButton(m_driveController, Button.kA.value)
+    // Spin the shooter wheels up when the right bumper is pressed.
+    new JoystickButton(m_driveController, Button.kRightBumper.value)
       .whenPressed(() -> m_shooter.spinUp(0.7))
       .whenReleased(() -> m_shooter.stop());
 
-    // Spin the shooter wheels down when the B button is pressed.
-    new JoystickButton(m_driveController, Button.kB.value)
+    // Spin the shooter wheels down when the left bumper is pressed.
+    new JoystickButton(m_driveController, Button.kLeftBumper.value)
       .whenPressed(() -> m_shooter.spinDown(0.4))
       .whenReleased(() -> m_shooter.stop());
+
+    // Extend/retract the intake solenoids when the X button is pressed.
+    new JoystickButton(m_driveController, Button.kX.value)
+      .whenPressed(() -> m_intake.extend());
+      
+    // Extend the intake solenoids when the X button is pressed.
+    new JoystickButton(m_driveController, Button.kY.value)
+      .whenPressed(() -> m_intake.retract());
+
+    // Raise the climber when the A button is pressed.
+    new JoystickButton(m_driveController, Button.kA.value)
+      .whenPressed(() -> m_climber.raise(0.5));
+
+    // Lower the climber when the B button is pressed.
+    new JoystickButton(m_driveController, Button.kB.value)
+      .whenPressed(() -> m_climber.lower(0.5));
   }
 
   /**

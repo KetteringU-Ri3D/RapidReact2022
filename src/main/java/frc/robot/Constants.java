@@ -25,4 +25,14 @@ public final class Constants {
     // Define the CAN IDs being used by the shooter motors.
     public static final int SHOOTER_LEFT = 5;
     public static final int SHOOTER_RIGHT = 6;
+
+    // Define the CAN ID being used by the climber motor.
+    public static final int CLIMBER = 7;
+
+    // Define the CAN ID being used by the intake motor.
+    public static final int INTAKE = 8;
+
+    // Define the ports being used by the intake solenoids.
+    public static final int [] INTAKE_SOLENOID_LEFT = new int[] {0, 1};
+    public static final int [] INTAKE_SOLENOID_RIGHT = new int[] {2, 3};
 }

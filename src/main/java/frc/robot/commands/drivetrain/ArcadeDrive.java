@@ -54,7 +54,7 @@ public class ArcadeDrive extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    // Use the stopDrive method from the Drivetrain subsystem.
+    // Use the stop method from the Drivetrain subsystem.
     m_drivetrain.stop();
   }
 
