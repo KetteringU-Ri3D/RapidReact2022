@@ -23,6 +23,7 @@ public class Climber extends SubsystemBase {
    * @param power Voltage being applied to the motor.
    */
   public void raise(double power) {
+    // Apply voltage to the motor.
     motor.set(ControlMode.PercentOutput, power);
   }
 
@@ -32,6 +33,7 @@ public class Climber extends SubsystemBase {
    * @param power Voltage being applied to the motor.
    */
   public void lower(double power) {
+    // Apply voltage to the motor.
     motor.set(ControlMode.PercentOutput, -power);
   }
 
@@ -39,6 +41,7 @@ public class Climber extends SubsystemBase {
    * stop - stops the motor.
    */
   public void stop() {
+    // Apply no voltage to the motor.
     motor.set(ControlMode.PercentOutput, 0);
   }
 

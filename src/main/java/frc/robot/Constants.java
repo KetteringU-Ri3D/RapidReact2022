@@ -32,6 +32,11 @@ public final class Constants {
     // Define the CAN ID being used by the intake motor.
     public static final int INTAKE = 8;
 
+    // Define the CAN IDs being used by the indexer motors.
+    public static final int INDEXER_SIDE = 9;
+    public static final int INDEXER_MID = 10;
+    public static final int INDEXER_UP = 11;
+
     // Define the ports being used by the intake solenoids.
     public static final int [] INTAKE_SOLENOID_LEFT = new int[] {0, 1};
     public static final int [] INTAKE_SOLENOID_RIGHT = new int[] {2, 3};

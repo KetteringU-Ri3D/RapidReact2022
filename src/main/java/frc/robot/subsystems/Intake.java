@@ -22,7 +22,6 @@ public class Intake extends SubsystemBase {
     PneumaticsModuleType.REVPH, 
     Constants.INTAKE_SOLENOID_LEFT[0], 
     Constants.INTAKE_SOLENOID_LEFT[1]);
-
   DoubleSolenoid solenoidRight = new DoubleSolenoid(
     PneumaticsModuleType.REVPH, 
     Constants.INTAKE_SOLENOID_RIGHT[0], 
@@ -37,6 +36,7 @@ public class Intake extends SubsystemBase {
    * @param power Voltage being applied to the motors.
    */
   public void collect(double power) {
+    // Apply voltage to the motor.
     motor.set(ControlMode.PercentOutput, power);
   }
 
@@ -46,6 +46,7 @@ public class Intake extends SubsystemBase {
    * @param power Voltage being applied to the motors.
    */
   public void eject(double power) {
+    // Apply voltage to the motor.
     motor.set(ControlMode.PercentOutput, -power);
   }
 
@@ -53,6 +54,7 @@ public class Intake extends SubsystemBase {
    * stop - stop the motor.
    */
   public void stop() {
+    // Apply no voltage to the motor.
     motor.set(ControlMode.PercentOutput, 0);
   }
 
@@ -60,16 +62,18 @@ public class Intake extends SubsystemBase {
    * extend - extend the intake solenoids for collecting Cargo.
    */
   public void extend() {
-    solenoidLeft.set(Value.kForward);
-    solenoidRight.set(Value.kForward);
+    // Turn each solenoid on.
+    solenoidLeft.set(Value.kReverse);
+    solenoidRight.set(Value.kReverse);
   }
 
   /**
    * retract - pull the intake solenoids back into the robot.
    */
   public void retract() {
-    solenoidLeft.set(Value.kReverse);
-    solenoidRight.set(Value.kReverse);
+    // Turn each solenoid off.
+    solenoidLeft.set(Value.kForward);
+    solenoidRight.set(Value.kForward);
   }
 
   @Override
