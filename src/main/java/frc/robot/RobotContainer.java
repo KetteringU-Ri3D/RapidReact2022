@@ -13,10 +13,12 @@ import frc.robot.commands.drivetrain.CurvatureDrive;
 import frc.robot.commands.drivetrain.TankDrive;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -29,6 +31,7 @@ public class RobotContainer {
   private final Drivetrain m_drivetrain = new Drivetrain();
   private final Shooter m_shooter = new Shooter();
   private final Intake m_intake = new Intake();
+  private final Indexer m_indexer = new Indexer();
   private final Climber m_climber = new Climber();
 
   private final AutoDriveForward m_autoDriveForward = new AutoDriveForward();
@@ -41,14 +44,14 @@ public class RobotContainer {
     // Configure the button bindings.
     configureButtonBindings();
 
-    // Set the drive controls to arcade.
-    m_drivetrain.setDefaultCommand(
-      new ArcadeDrive(
-        m_drivetrain, 
-        () -> m_driveController.getLeftY(),
-        () -> m_driveController.getRightX()
-      )
-    );
+    // // Set the drive controls to arcade.
+    // m_drivetrain.setDefaultCommand(
+    //   new ArcadeDrive(
+    //     m_drivetrain, 
+    //     () -> m_driveController.getLeftY(),
+    //     () -> m_driveController.getRightX()
+    //   )
+    // );
 
     // // Set the drive controls to tank.
     // m_drivetrain.setDefaultCommand(
@@ -96,11 +99,23 @@ public class RobotContainer {
 
     // Raise the climber when the A button is pressed.
     new JoystickButton(m_driveController, Button.kA.value)
-      .whenPressed(() -> m_climber.raise(0.5));
+      .whenPressed(() -> m_climber.raise(0.25));
 
     // Lower the climber when the B button is pressed.
     new JoystickButton(m_driveController, Button.kB.value)
       .whenPressed(() -> m_climber.lower(0.5));
+
+    // Collect Cargo and index Cargo towards the shooter when RT is pressed.
+    if (m_driveController.getRightTriggerAxis() > 0.25) {
+      m_intake.collect(0.5);
+      m_indexer.index(0.5);
+    }
+
+    // Eject Cargo and reverse the indexer when RT is pressed.
+    if (m_driveController.getLeftTriggerAxis() > 0.25) {
+      m_intake.eject(0.5);
+      m_indexer.outdex(0.5);
+    }
   }
 
   /**
