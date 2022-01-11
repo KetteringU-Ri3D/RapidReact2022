@@ -24,7 +24,7 @@ public class Climber extends SubsystemBase {
    */
   public void raise(double power) {
     // Apply voltage to the motor.
-    motor.set(ControlMode.PercentOutput, power);
+    motor.set(ControlMode.PercentOutput, -power);
   }
 
   /**
@@ -34,7 +34,7 @@ public class Climber extends SubsystemBase {
    */
   public void lower(double power) {
     // Apply voltage to the motor.
-    motor.set(ControlMode.PercentOutput, -power);
+    motor.set(ControlMode.PercentOutput, power);
   }
 
   /**

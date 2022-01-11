@@ -16,13 +16,19 @@ public class Indexer extends SubsystemBase {
   TalonSRX motorSide = new TalonSRX(Constants.INDEXER_SIDE);
   TalonSRX motorMid = new TalonSRX(Constants.INDEXER_MID);
   TalonSRX motorUp = new TalonSRX(Constants.INDEXER_UP);
+  TalonSRX motorTop = new TalonSRX(Constants.INDEXER_TOP);
 
   /** Creates a new Indexer. */
   public Indexer() {
-    // Set all motors to Brake mode.
-    motorSide.setNeutralMode(NeutralMode.Brake);
-    motorMid.setNeutralMode(NeutralMode.Brake);
-    motorUp.setNeutralMode(NeutralMode.Brake);
+    // // Set all motors to Brake mode.
+    // motorSide.setNeutralMode(NeutralMode.Brake);
+    // motorMid.setNeutralMode(NeutralMode.Brake);
+    // motorUp.setNeutralMode(NeutralMode.Brake);
+    // motorTop.setNeutralMode(NeutralMode.Brake);
+
+    // Invert the upward motion motors.
+    motorUp.setInverted(true);
+    motorTop.setInverted(true);
   }
 
   /**
@@ -32,9 +38,10 @@ public class Indexer extends SubsystemBase {
    */
   public void index(double power) {
     // Apply voltage to the motors.
-    motorSide.set(ControlMode.PercentOutput, power);
+    motorSide.set(ControlMode.PercentOutput, power * 1.5);
     motorMid.set(ControlMode.PercentOutput, power);
     motorUp.set(ControlMode.PercentOutput, power);
+    motorTop.set(ControlMode.PercentOutput, power);
   }
 
   /**
@@ -47,6 +54,7 @@ public class Indexer extends SubsystemBase {
     motorSide.set(ControlMode.PercentOutput,-power);
     motorMid.set(ControlMode.PercentOutput, -power);
     motorUp.set(ControlMode.PercentOutput, -power);
+    motorTop.set(ControlMode.PercentOutput, -power);
   }
 
   public void stop() {
@@ -54,6 +62,7 @@ public class Indexer extends SubsystemBase {
     motorSide.set(ControlMode.PercentOutput, 0);
     motorMid.set(ControlMode.PercentOutput, 0);
     motorUp.set(ControlMode.PercentOutput, 0);
+    motorTop.set(ControlMode.PercentOutput, 0);
   }
 
   @Override

@@ -44,14 +44,14 @@ public class RobotContainer {
     // Configure the button bindings.
     configureButtonBindings();
 
-    // // Set the drive controls to arcade.
-    // m_drivetrain.setDefaultCommand(
-    //   new ArcadeDrive(
-    //     m_drivetrain, 
-    //     () -> m_driveController.getLeftY(),
-    //     () -> m_driveController.getRightX()
-    //   )
-    // );
+    // Set the drive controls to arcade.
+    m_drivetrain.setDefaultCommand(
+      new ArcadeDrive(
+        m_drivetrain, 
+        () -> m_driveController.getLeftY() * 0.5,
+        () -> m_driveController.getRightX() * 0.5
+      )
+    );
 
     // // Set the drive controls to tank.
     // m_drivetrain.setDefaultCommand(
@@ -81,7 +81,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // Spin the shooter wheels up when the right bumper is pressed.
     new JoystickButton(m_driveController, Button.kRightBumper.value)
-      .whenPressed(() -> m_shooter.spinUp(0.7))
+      .whenPressed(() -> m_shooter.spinUp(0.75))
       .whenReleased(() -> m_shooter.stop());
 
     // Spin the shooter wheels down when the left bumper is pressed.
@@ -89,33 +89,43 @@ public class RobotContainer {
       .whenPressed(() -> m_shooter.spinDown(0.4))
       .whenReleased(() -> m_shooter.stop());
 
-    // Extend/retract the intake solenoids when the X button is pressed.
-    new JoystickButton(m_driveController, Button.kX.value)
-      .whenPressed(() -> m_intake.extend());
-      
-    // Extend the intake solenoids when the X button is pressed.
-    new JoystickButton(m_driveController, Button.kY.value)
-      .whenPressed(() -> m_intake.retract());
-
     // Raise the climber when the A button is pressed.
     new JoystickButton(m_driveController, Button.kA.value)
-      .whenPressed(() -> m_climber.raise(0.25));
+      .whenPressed(() -> m_climber.raise(0.5))
+      .whenReleased(() -> m_climber.stop());
 
     // Lower the climber when the B button is pressed.
     new JoystickButton(m_driveController, Button.kB.value)
-      .whenPressed(() -> m_climber.lower(0.5));
+      .whenPressed(() -> m_climber.lower(0.65))
+      .whenReleased(() -> m_climber.stop());
 
-    // Collect Cargo and index Cargo towards the shooter when RT is pressed.
-    if (m_driveController.getRightTriggerAxis() > 0.25) {
-      m_intake.collect(0.5);
-      m_indexer.index(0.5);
-    }
+    new JoystickButton(m_driveController, Button.kX.value)
+      .whenPressed(() -> m_indexer.index(0.25))
+      .whenReleased(() -> m_indexer.stop());
 
-    // Eject Cargo and reverse the indexer when RT is pressed.
-    if (m_driveController.getLeftTriggerAxis() > 0.25) {
-      m_intake.eject(0.5);
-      m_indexer.outdex(0.5);
-    }
+    new JoystickButton(m_driveController, Button.kY.value)
+      .whenPressed(() -> m_indexer.outdex(0.25))
+      .whenReleased(() -> m_indexer.stop());
+
+    // // Collect Cargo and index Cargo towards the shooter when RT is pressed.
+    // if (m_driveController.getRightTriggerAxis() > 0.25) {
+    //   m_intake.collect(0.5);
+    //   m_indexer.index(0.5);
+    // }
+
+    // // Eject Cargo and reverse the indexer when RT is pressed.
+    // if (m_driveController.getLeftTriggerAxis() > 0.25) {
+    //   m_intake.eject(0.5);
+    //   m_indexer.outdex(0.5);
+    // }
+
+    // // Extend the intake solenoids when the X button is pressed.
+    // new JoystickButton(m_driveController, Button.kX.value)
+    //   .whenPressed(() -> m_intake.extend());
+      
+    // // Retract the intake solenoids when the Y button is pressed.
+    // new JoystickButton(m_driveController, Button.kY.value)
+    //   .whenPressed(() -> m_intake.retract());
   }
 
   /**

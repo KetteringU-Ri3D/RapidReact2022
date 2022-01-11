@@ -4,8 +4,8 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -14,8 +14,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
-  // Create a CANSparkMax object to control the motor on the intake.
-  CANSparkMax motor = new CANSparkMax(Constants.INTAKE, MotorType.kBrushless);
+  // Create a VictorSPX object to control the motor on the intake.
+  VictorSPX motor = new VictorSPX(Constants.INTAKE);
 
   // Create two DoubleSolenoid objects to control the solenoids on the intake.
   DoubleSolenoid solenoidLeft = new DoubleSolenoid(
@@ -37,7 +37,7 @@ public class Intake extends SubsystemBase {
    */
   public void collect(double power) {
     // Apply voltage to the motor.
-    motor.set(power);
+    motor.set(ControlMode.PercentOutput, power);
   }
 
   /**
@@ -47,7 +47,7 @@ public class Intake extends SubsystemBase {
    */
   public void eject(double power) {
     // Apply voltage to the motor.
-    motor.set(-power);
+    motor.set(ControlMode.PercentOutput, -power);
   }
 
   /**
@@ -55,7 +55,7 @@ public class Intake extends SubsystemBase {
    */
   public void stop() {
     // Apply no voltage to the motor.
-    motor.stopMotor();
+    motor.set(ControlMode.PercentOutput, 0);
   }
 
   /**

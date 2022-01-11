@@ -36,6 +36,7 @@ public final class Constants {
     public static final int INDEXER_SIDE = 9;
     public static final int INDEXER_MID = 10;
     public static final int INDEXER_UP = 11;
+    public static final int INDEXER_TOP = 12;
 
     // Define the ports being used by the intake solenoids.
     public static final int [] INTAKE_SOLENOID_LEFT = new int[] {0, 1};
