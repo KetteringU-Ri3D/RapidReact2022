@@ -48,8 +48,8 @@ public class RobotContainer {
     m_drivetrain.setDefaultCommand(
       new ArcadeDrive(
         m_drivetrain, 
-        () -> m_driveController.getLeftY() * 0.5,
-        () -> m_driveController.getRightX() * 0.5
+        () -> m_driveController.getLeftY() * 0.85,
+        () -> m_driveController.getRightX() * 0.85
       )
     );
 
@@ -106,6 +106,14 @@ public class RobotContainer {
     new JoystickButton(m_driveController, Button.kY.value)
       .whenPressed(() -> m_indexer.outdex(0.25))
       .whenReleased(() -> m_indexer.stop());
+
+    new JoystickButton(m_driveController, Button.kStart.value)
+      .whenPressed(() -> m_intake.collect(0.65))
+      .whenReleased(() -> m_intake.stop());
+
+    new JoystickButton(m_driveController, Button.kBack.value)
+      .whenPressed(() -> m_intake.eject(0.65))
+      .whenReleased(() -> m_intake.stop());
 
     // // Collect Cargo and index Cargo towards the shooter when RT is pressed.
     // if (m_driveController.getRightTriggerAxis() > 0.25) {

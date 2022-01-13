@@ -28,7 +28,10 @@ public class Intake extends SubsystemBase {
     Constants.INTAKE_SOLENOID_RIGHT[1]);
 
   /** Creates a new Intake. */
-  public Intake() {}
+  public Intake() {
+    // Invert the motor.
+    // motor.setInverted(true);
+  }
 
   /**
    * collect - gather Cargo.

@@ -27,7 +27,7 @@ public class Indexer extends SubsystemBase {
     // motorTop.setNeutralMode(NeutralMode.Brake);
 
     // Invert the upward motion motors.
-    motorUp.setInverted(true);
+    // motorUp.setInverted(true);
     motorTop.setInverted(true);
   }
 
