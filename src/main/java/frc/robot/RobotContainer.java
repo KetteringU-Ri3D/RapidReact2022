@@ -7,7 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
-import frc.robot.commands.autonomous.AutoDriveForward;
+import frc.robot.commands.autonomous.AutoDriveToPosition;
 import frc.robot.commands.drivetrain.ArcadeDrive;
 import frc.robot.commands.drivetrain.CurvatureDrive;
 import frc.robot.commands.drivetrain.TankDrive;
@@ -34,10 +34,15 @@ public class RobotContainer {
   private final Indexer m_indexer = new Indexer();
   private final Climber m_climber = new Climber();
 
-  private final AutoDriveForward m_autoDriveForward = new AutoDriveForward();
+  // Create an AutoDriveToPosition command to be used in autonomous.
+  private final AutoDriveToPosition m_autoDriveToPosition = new AutoDriveToPosition(m_drivetrain, () -> -90);
 
   // Define an XboxController object to control the robot with.
   private final XboxController m_driveController = new XboxController(Constants.DRIVE_CONTROLLER);
+
+  // Create constant values for LT and RT, used for readability.
+  private final int LT = 2;
+  private final int RT = 3;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -79,16 +84,6 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // Spin the shooter wheels up when the right bumper is pressed.
-    new JoystickButton(m_driveController, Button.kRightBumper.value)
-      .whenPressed(() -> m_shooter.spinUp(0.75))
-      .whenReleased(() -> m_shooter.stop());
-
-    // Spin the shooter wheels down when the left bumper is pressed.
-    new JoystickButton(m_driveController, Button.kLeftBumper.value)
-      .whenPressed(() -> m_shooter.spinDown(0.4))
-      .whenReleased(() -> m_shooter.stop());
-
     // Raise the climber when the A button is pressed.
     new JoystickButton(m_driveController, Button.kA.value)
       .whenPressed(() -> m_climber.raise(0.5))
@@ -99,12 +94,34 @@ public class RobotContainer {
       .whenPressed(() -> m_climber.lower(0.65))
       .whenReleased(() -> m_climber.stop());
 
+    // Spin the shooter wheels up when the right bumper is pressed.
+    new JoystickButton(m_driveController, Button.kRightBumper.value)
+      .whenPressed(() -> m_shooter.spinUp(0.75))
+      .whenReleased(() -> m_shooter.stop());
+
+    new JoystickButton(m_driveController, Button.kLeftBumper.value)
+      .whenPressed(() -> collectAndIndex())
+      .whenReleased(() -> stopCollectAndIndex());
+
+    // // Run the intake and indexer inwards (towards the shooter) when
+    // // RT is pressed
+    // new JoystickButton(m_driveController, 10)
+    //   .whenPressed(() -> collectAndIndex())
+    //   .whenReleased(() -> stopCollectAndIndex());
+
+    // // Run the intake and indexer outwards (towards the intake) when
+    // // LT is pressed
+    // new JoystickButton(m_driveController, 9)
+    // .whenPressed(() -> ejectAndOutdex())
+    // .whenReleased(() -> stopCollectAndIndex());
+
+    // TEST
     new JoystickButton(m_driveController, Button.kX.value)
-      .whenPressed(() -> m_indexer.index(0.25))
+      .whenPressed(() -> m_indexer.index(0.4))
       .whenReleased(() -> m_indexer.stop());
 
     new JoystickButton(m_driveController, Button.kY.value)
-      .whenPressed(() -> m_indexer.outdex(0.25))
+      .whenPressed(() -> m_indexer.outdex(0.4))
       .whenReleased(() -> m_indexer.stop());
 
     new JoystickButton(m_driveController, Button.kStart.value)
@@ -114,26 +131,22 @@ public class RobotContainer {
     new JoystickButton(m_driveController, Button.kBack.value)
       .whenPressed(() -> m_intake.eject(0.65))
       .whenReleased(() -> m_intake.stop());
+  }
 
-    // // Collect Cargo and index Cargo towards the shooter when RT is pressed.
-    // if (m_driveController.getRightTriggerAxis() > 0.25) {
-    //   m_intake.collect(0.5);
-    //   m_indexer.index(0.5);
-    // }
+  /**
+   * collectAndIndex - run the collect and index commands.
+   */
+  public void collectAndIndex() {
+    m_intake.collect(0.65);
+    m_indexer.index(0.4);
+  }
 
-    // // Eject Cargo and reverse the indexer when RT is pressed.
-    // if (m_driveController.getLeftTriggerAxis() > 0.25) {
-    //   m_intake.eject(0.5);
-    //   m_indexer.outdex(0.5);
-    // }
-
-    // // Extend the intake solenoids when the X button is pressed.
-    // new JoystickButton(m_driveController, Button.kX.value)
-    //   .whenPressed(() -> m_intake.extend());
-      
-    // // Retract the intake solenoids when the Y button is pressed.
-    // new JoystickButton(m_driveController, Button.kY.value)
-    //   .whenPressed(() -> m_intake.retract());
+  /**
+   * sotpCollectAndIndex - stop the collect and index commands.
+   */
+  public void stopCollectAndIndex() {
+    m_intake.stop();
+    m_indexer.stop();
   }
 
   /**
@@ -142,7 +155,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return m_autoDriveForward;
+    // The chosen command will run in autonomous
+    return m_autoDriveToPosition;
   }
 }

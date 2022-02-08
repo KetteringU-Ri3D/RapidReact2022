@@ -5,32 +5,20 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
   // Create a VictorSPX object to control the motor on the intake.
-  VictorSPX motor = new VictorSPX(Constants.INTAKE);
-
-  // Create two DoubleSolenoid objects to control the solenoids on the intake.
-  DoubleSolenoid solenoidLeft = new DoubleSolenoid(
-    PneumaticsModuleType.REVPH, 
-    Constants.INTAKE_SOLENOID_LEFT[0], 
-    Constants.INTAKE_SOLENOID_LEFT[1]);
-  DoubleSolenoid solenoidRight = new DoubleSolenoid(
-    PneumaticsModuleType.REVPH, 
-    Constants.INTAKE_SOLENOID_RIGHT[0], 
-    Constants.INTAKE_SOLENOID_RIGHT[1]);
+  VictorSPX m_motor = new VictorSPX(Constants.INTAKE);
 
   /** Creates a new Intake. */
   public Intake() {
-    // Invert the motor.
-    // motor.setInverted(true);
+    // Put the motor in Coast mode.
+    m_motor.setNeutralMode(NeutralMode.Coast);
   }
 
   /**
@@ -40,7 +28,7 @@ public class Intake extends SubsystemBase {
    */
   public void collect(double power) {
     // Apply voltage to the motor.
-    motor.set(ControlMode.PercentOutput, power);
+    m_motor.set(ControlMode.PercentOutput, power);
   }
 
   /**
@@ -50,7 +38,7 @@ public class Intake extends SubsystemBase {
    */
   public void eject(double power) {
     // Apply voltage to the motor.
-    motor.set(ControlMode.PercentOutput, -power);
+    m_motor.set(ControlMode.PercentOutput, -power);
   }
 
   /**
@@ -58,25 +46,7 @@ public class Intake extends SubsystemBase {
    */
   public void stop() {
     // Apply no voltage to the motor.
-    motor.set(ControlMode.PercentOutput, 0);
-  }
-
-  /**
-   * extend - extend the intake solenoids for collecting Cargo.
-   */
-  public void extend() {
-    // Turn each solenoid on.
-    solenoidLeft.set(Value.kReverse);
-    solenoidRight.set(Value.kReverse);
-  }
-
-  /**
-   * retract - pull the intake solenoids back into the robot.
-   */
-  public void retract() {
-    // Turn each solenoid off.
-    solenoidLeft.set(Value.kForward);
-    solenoidRight.set(Value.kForward);
+    m_motor.set(ControlMode.PercentOutput, 0);
   }
 
   @Override

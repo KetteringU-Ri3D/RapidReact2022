@@ -13,22 +13,21 @@ import frc.robot.Constants;
 
 public class Indexer extends SubsystemBase {
   // Create TalonSRX objects to control the motors on the indexer.
-  TalonSRX motorSide = new TalonSRX(Constants.INDEXER_SIDE);
-  TalonSRX motorMid = new TalonSRX(Constants.INDEXER_MID);
-  TalonSRX motorUp = new TalonSRX(Constants.INDEXER_UP);
-  TalonSRX motorTop = new TalonSRX(Constants.INDEXER_TOP);
+  TalonSRX m_motorSide = new TalonSRX(Constants.INDEXER_SIDE);
+  TalonSRX m_motorMid = new TalonSRX(Constants.INDEXER_MID);
+  TalonSRX m_motorUp = new TalonSRX(Constants.INDEXER_UP);
+  TalonSRX m_motorTop = new TalonSRX(Constants.INDEXER_TOP);
 
   /** Creates a new Indexer. */
   public Indexer() {
-    // // Set all motors to Brake mode.
-    // motorSide.setNeutralMode(NeutralMode.Brake);
-    // motorMid.setNeutralMode(NeutralMode.Brake);
-    // motorUp.setNeutralMode(NeutralMode.Brake);
-    // motorTop.setNeutralMode(NeutralMode.Brake);
+    // Set all motors to Brake mode.
+    m_motorSide.setNeutralMode(NeutralMode.Brake);
+    m_motorMid.setNeutralMode(NeutralMode.Brake);
+    m_motorUp.setNeutralMode(NeutralMode.Brake);
+    m_motorTop.setNeutralMode(NeutralMode.Brake);
 
     // Invert the upward motion motors.
-    // motorUp.setInverted(true);
-    motorTop.setInverted(true);
+    m_motorTop.setInverted(true);
   }
 
   /**
@@ -38,10 +37,10 @@ public class Indexer extends SubsystemBase {
    */
   public void index(double power) {
     // Apply voltage to the motors.
-    motorSide.set(ControlMode.PercentOutput, power * 1.5);
-    motorMid.set(ControlMode.PercentOutput, power);
-    motorUp.set(ControlMode.PercentOutput, power);
-    motorTop.set(ControlMode.PercentOutput, power);
+    m_motorSide.set(ControlMode.PercentOutput, power * 2);
+    m_motorMid.set(ControlMode.PercentOutput, power);
+    m_motorUp.set(ControlMode.PercentOutput, power);
+    m_motorTop.set(ControlMode.PercentOutput, power * 1.75);
   }
 
   /**
@@ -51,18 +50,18 @@ public class Indexer extends SubsystemBase {
    */
   public void outdex(double power) {
     // Apply voltage to the motors.
-    motorSide.set(ControlMode.PercentOutput,-power);
-    motorMid.set(ControlMode.PercentOutput, -power);
-    motorUp.set(ControlMode.PercentOutput, -power);
-    motorTop.set(ControlMode.PercentOutput, -power);
+    m_motorSide.set(ControlMode.PercentOutput,-power * 2);
+    m_motorMid.set(ControlMode.PercentOutput, -power);
+    m_motorUp.set(ControlMode.PercentOutput, -power);
+    m_motorTop.set(ControlMode.PercentOutput, -power * 1.75);
   }
 
   public void stop() {
     // Apply no voltage to the motors.
-    motorSide.set(ControlMode.PercentOutput, 0);
-    motorMid.set(ControlMode.PercentOutput, 0);
-    motorUp.set(ControlMode.PercentOutput, 0);
-    motorTop.set(ControlMode.PercentOutput, 0);
+    m_motorSide.set(ControlMode.PercentOutput, 0);
+    m_motorMid.set(ControlMode.PercentOutput, 0);
+    m_motorUp.set(ControlMode.PercentOutput, 0);
+    m_motorTop.set(ControlMode.PercentOutput, 0);
   }
 
   @Override

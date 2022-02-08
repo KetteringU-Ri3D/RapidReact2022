@@ -13,17 +13,17 @@ import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
   // Create TalonFX objects to control the motors on the shooter.
-  TalonFX motorLeft = new TalonFX(Constants.SHOOTER_LEFT);
-  TalonFX motorRight = new TalonFX(Constants.SHOOTER_RIGHT);
+  TalonFX m_motorLeft = new TalonFX(Constants.SHOOTER_LEFT);
+  TalonFX m_motorRight = new TalonFX(Constants.SHOOTER_RIGHT);
 
   /** Creates a new Shooter. */
   public Shooter() {
     // Set all motors to Coast mode.
-    motorLeft.setNeutralMode(NeutralMode.Coast);
-    motorRight.setNeutralMode(NeutralMode.Coast);
+    m_motorLeft.setNeutralMode(NeutralMode.Coast);
+    m_motorRight.setNeutralMode(NeutralMode.Coast);
 
     // Invert the right motor.
-    motorRight.setInverted(true);
+    m_motorRight.setInverted(true);
   }
 
   /**
@@ -33,8 +33,8 @@ public class Shooter extends SubsystemBase {
    */
   public void spinUp(double power) {
     // Apply the voltage to both motors. Note that the right motor is inverted.
-    motorLeft.set(ControlMode.PercentOutput, -power);
-    motorRight.set(ControlMode.PercentOutput, -power);
+    m_motorLeft.set(ControlMode.PercentOutput, -power);
+    m_motorRight.set(ControlMode.PercentOutput, -power);
   }
 
   /**
@@ -44,8 +44,8 @@ public class Shooter extends SubsystemBase {
    */
   public void spinDown(double power) {
     // Apply the voltage to both motors. Note that the right motor is inverted.
-    motorLeft.set(ControlMode.PercentOutput, power);
-    motorRight.set(ControlMode.PercentOutput, power);
+    m_motorLeft.set(ControlMode.PercentOutput, power);
+    m_motorRight.set(ControlMode.PercentOutput, power);
   }
 
   /**
@@ -53,8 +53,8 @@ public class Shooter extends SubsystemBase {
    */
   public void stop() {
     // Apply the voltage to both motors. Note that the right motor is inverted.
-    motorLeft.set(ControlMode.PercentOutput, 0);
-    motorRight.set(ControlMode.PercentOutput, 0);
+    m_motorLeft.set(ControlMode.PercentOutput, 0);
+    m_motorRight.set(ControlMode.PercentOutput, 0);
   }
 
   @Override

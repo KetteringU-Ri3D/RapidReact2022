@@ -5,6 +5,9 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -15,30 +18,75 @@ import frc.robot.Constants;
 
 public class Drivetrain extends SubsystemBase {
   // Create CANSparkMax objects to control the motors on the drivetrain.
-  CANSparkMax motorFrontLeft = new CANSparkMax(Constants.DRIVE_FRONT_LEFT, MotorType.kBrushless);
-  CANSparkMax motorRearLeft = new CANSparkMax(Constants.DRIVE_REAR_LEFT, MotorType.kBrushless);
-  CANSparkMax motorFrontRight = new CANSparkMax(Constants.DRIVE_FRONT_RIGHT, MotorType.kBrushless);
-  CANSparkMax motorRearRight = new CANSparkMax(Constants.DRIVE_REAR_RIGHT, MotorType.kBrushless);
+  CANSparkMax m_motorFrontLeft = new CANSparkMax(Constants.DRIVE_FRONT_LEFT, MotorType.kBrushless);
+  CANSparkMax m_motorRearLeft = new CANSparkMax(Constants.DRIVE_REAR_LEFT, MotorType.kBrushless);
+  CANSparkMax m_motorFrontRight = new CANSparkMax(Constants.DRIVE_FRONT_RIGHT, MotorType.kBrushless);
+  CANSparkMax m_motorRearRight = new CANSparkMax(Constants.DRIVE_REAR_RIGHT, MotorType.kBrushless);
 
   // Create MotorControllerGroup objects to use the defined motors in a DifferentialDrive class.
-  MotorControllerGroup motorsLeft = new MotorControllerGroup(motorFrontLeft, motorRearLeft);
-  MotorControllerGroup motorsRight = new MotorControllerGroup(motorFrontRight, motorRearRight);
+  MotorControllerGroup m_motorsLeft = new MotorControllerGroup(m_motorFrontLeft, m_motorRearLeft);
+  MotorControllerGroup m_motorsRight = new MotorControllerGroup(m_motorFrontRight, m_motorRearRight);
 
   // Create a DifferentialDrive object with the defined motors.
-  DifferentialDrive drive = new DifferentialDrive(motorsLeft, motorsRight);
+  DifferentialDrive m_drive = new DifferentialDrive(m_motorsLeft, m_motorsRight);
+
+  // Create RelativeEncoder objects for each of the defined motors.
+  RelativeEncoder m_encoderFrontLeft, m_encoderRearLeft, m_encoderFrontRight, m_encoderRearRight;
+
+  // Create SparkMaxPIDController objects for closed-loop control during autonomous.
+  SparkMaxPIDController m_pidFrontLeft, m_pidRearLeft, m_pidFrontRight, m_pidRearRight;
+
+  // Create variables for PID control values.
+  double kP = 0.0, 
+         kI = 0.0,
+         kD = 0.0, 
+         kIz = 0.0, 
+         kFF = 0.0, 
+         kMaxOutput = 1, 
+         kMinOutput = -1;
   
   
   /** Creates a new Drivetrain */
   public Drivetrain() {
+    // Restore all factory defaults for safety.
+    m_motorFrontLeft.restoreFactoryDefaults();
+    m_motorRearLeft.restoreFactoryDefaults();
+    m_motorFrontRight.restoreFactoryDefaults();
+    m_motorRearRight.restoreFactoryDefaults();
+
     // Set all motors to Brake mode.
-    motorFrontLeft.setIdleMode(IdleMode.kBrake);
-    motorFrontRight.setIdleMode(IdleMode.kBrake);
-    motorRearLeft.setIdleMode(IdleMode.kBrake);
-    motorRearRight.setIdleMode(IdleMode.kBrake);
+    m_motorFrontLeft.setIdleMode(IdleMode.kBrake);
+    m_motorFrontRight.setIdleMode(IdleMode.kBrake);
+    m_motorRearLeft.setIdleMode(IdleMode.kBrake);
+    m_motorRearRight.setIdleMode(IdleMode.kBrake);
 
     // Invert the right motors.
-    motorFrontRight.setInverted(true);
-    motorRearRight.setInverted(true);
+    m_motorFrontRight.setInverted(true);
+    m_motorRearRight.setInverted(true);
+
+    // Allow m_motors to be used with PID control.
+    m_pidFrontLeft = m_motorFrontLeft.getPIDController();
+    m_pidRearLeft = m_motorRearLeft.getPIDController();
+    m_pidFrontRight = m_motorFrontRight.getPIDController();
+    m_pidRearRight = m_motorRearRight.getPIDController();
+
+    // Set the encoders to their respective m_motors.
+    m_encoderFrontLeft = m_motorFrontLeft.getEncoder();
+    m_encoderRearLeft = m_motorRearLeft.getEncoder();
+    m_encoderFrontRight = m_motorFrontRight.getEncoder();
+    m_encoderRearRight = m_motorRearRight.getEncoder();
+
+    // Set the feedback device of each PID controller to its respective encoder.
+    m_pidFrontLeft.setFeedbackDevice(m_encoderFrontLeft);
+    m_pidRearLeft.setFeedbackDevice(m_encoderRearLeft);
+    m_pidFrontRight.setFeedbackDevice(m_encoderFrontRight);
+    m_pidRearRight.setFeedbackDevice(m_encoderRearRight);
+
+    // Set PID coefficients.
+    setCoefficients(m_pidFrontLeft);
+    setCoefficients(m_pidRearLeft);
+    setCoefficients(m_pidFrontRight);
+    setCoefficients(m_pidRearRight);
   }
 
   /**
@@ -51,7 +99,7 @@ public class Drivetrain extends SubsystemBase {
    */
   public void arcadeDrive(double throttle, double rotation) {
     // Call DifferentialDrive's arcadeDrive method.
-    drive.arcadeDrive(throttle, rotation);
+    m_drive.arcadeDrive(throttle, rotation, true);
   }
   
   /**
@@ -64,7 +112,7 @@ public class Drivetrain extends SubsystemBase {
    */
   public void tankDrive(double left, double right) {
     // Call DifferentialDrive's tankDrive method.
-    drive.tankDrive(left, right);
+    m_drive.tankDrive(left, right);
   }
 
   /**
@@ -80,14 +128,78 @@ public class Drivetrain extends SubsystemBase {
    */
   public void curvatureDrive(double throttle, double rotation) {
     // Call DifferentialDrive's curvatureDrive method.
-    drive.curvatureDrive(throttle, rotation, true);
+    m_drive.curvatureDrive(throttle, rotation, true);
   }
 
   /**
    * stopDrive - stops all motors on the drivetrain.
    */
   public void stop() {
-    drive.stopMotor();
+    // Call CANSparkMax's stopMotor.
+    m_drive.stopMotor();
+  }
+
+  /**
+   * driveToPosition - use encoders to drive to a set position.
+   * 
+   * @param setpoint - ending position to drive to.
+   */
+  public void driveToPosition(double setpoint) {
+    // Convert the setpoint to encoder counts.
+    double counts = inchesToEncoderCounts(setpoint);
+
+    // Set the position of both front encoders.
+    m_encoderFrontLeft.setPosition(counts);
+    m_encoderFrontRight.setPosition(counts);
+
+    // Set the reference of each PID controller to the setpoint.
+    m_pidFrontLeft.setReference(counts, ControlType.kPosition);
+    m_pidFrontRight.setReference(counts, ControlType.kPosition);
+  }
+
+  /**
+   * resetEncoders - reset the encoder values to make using them again easier.
+   */
+  public void resetEncoders() {
+    // Set the position of both front encoders to zero, effectively resetting them.
+    m_encoderFrontLeft.setPosition(0);
+    m_encoderFrontRight.setPosition(0);
+  }
+
+  /**
+   * setCoefficients - set the PID coefficients of the given PID controller.
+   * 
+   * @param controller - the given PID controller.
+   */
+  public void setCoefficients(SparkMaxPIDController controller) {
+    controller.setP(kP);
+    controller.setI(kI);
+    controller.setD(kD);
+    controller.setIZone(kIz);
+    controller.setFF(kFF);
+    controller.setOutputRange(kMinOutput, kMaxOutput);
+  }
+
+  /**
+   * 
+   * @param inch - the desired value in inches.
+   */
+  public double inchesToEncoderCounts(double inch) {
+    // Set constant values.
+    double wheelDiameter = 6;
+    double encoderCountsPerRev = 4096;
+
+    // Calculate the circumference.
+    double circumference = wheelDiameter * Math.PI;
+
+    // Calculate the encoder counts per inch.
+    double countsPerInch = encoderCountsPerRev / circumference;
+
+    // Calculate the final answer, which is the number of encoder counts required.
+    double result = inch * countsPerInch;
+
+    // Send the value back.
+    return result;
   }
 
   @Override
