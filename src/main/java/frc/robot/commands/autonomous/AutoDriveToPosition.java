@@ -53,6 +53,8 @@ public class AutoDriveToPosition extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    // Print a statement for end of auto.
+    System.out.println("AUTO DONE");
     return false;
   }
 }

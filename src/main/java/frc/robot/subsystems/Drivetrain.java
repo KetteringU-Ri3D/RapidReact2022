@@ -70,7 +70,7 @@ public class Drivetrain extends SubsystemBase {
     m_pidFrontRight = m_motorFrontRight.getPIDController();
     m_pidRearRight = m_motorRearRight.getPIDController();
 
-    // Set the encoders to their respective m_motors.
+    // Set the encoders to their respective motors.
     m_encoderFrontLeft = m_motorFrontLeft.getEncoder();
     m_encoderRearLeft = m_motorRearLeft.getEncoder();
     m_encoderFrontRight = m_motorFrontRight.getEncoder();
@@ -157,19 +157,12 @@ public class Drivetrain extends SubsystemBase {
     // m_pidFrontLeft.setReference(counts, ControlType.kPosition);
     // m_pidFrontRight.setReference(counts, ControlType.kPosition);
 
-    System.out.println("ENCODER POSITION: " + m_encoderFrontLeft.getPosition());
+    System.out.println("DRIVE ENCODER POSITION: " + m_encoderFrontLeft.getPosition());
 
     arcadeDrive(power, 0);
     if (m_encoderFrontLeft.getPosition() >= inchesToEncoderCounts(counts)) {
       arcadeDrive(0, 0);
-    }
-
-    // while(m_encoderFrontLeft.getPosition() < inchesToEncoderCounts(counts)) {
-    //   arcadeDrive(0.25, 0);
-      
-      
-    // }
-    
+    }    
   }
 
   /**

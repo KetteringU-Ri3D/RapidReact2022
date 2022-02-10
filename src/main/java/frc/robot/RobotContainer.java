@@ -41,10 +41,6 @@ public class RobotContainer {
   // Define an XboxController object to control the robot with.
   private final XboxController m_driveController = new XboxController(Constants.DRIVE_CONTROLLER);
 
-  // Create constant values for LT and RT, used for readability.
-  private final int LT = 2;
-  private final int RT = 3;
-
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings.
@@ -100,36 +96,18 @@ public class RobotContainer {
       .whenPressed(() -> m_shooter.spinUp(0.75))
       .whenReleased(() -> m_shooter.stop());
 
+    // Run the intake and indexer inward when the left bumper is pressed.
     new JoystickButton(m_driveController, Button.kLeftBumper.value)
       .whenPressed(() -> collectAndIndex())
       .whenReleased(() -> stopCollectAndIndex());
 
-    // // Run the intake and indexer inwards (towards the shooter) when
-    // // RT is pressed
-    // new JoystickButton(m_driveController, 10)
-    //   .whenPressed(() -> collectAndIndex())
-    //   .whenReleased(() -> stopCollectAndIndex());
-
-    // // Run the intake and indexer outwards (towards the intake) when
-    // // LT is pressed
-    // new JoystickButton(m_driveController, 9)
-    // .whenPressed(() -> ejectAndOutdex())
-    // .whenReleased(() -> stopCollectAndIndex());
-
-    // TEST
-    new JoystickButton(m_driveController, Button.kX.value)
-      .whenPressed(() -> m_indexer.index(0.4))
-      .whenReleased(() -> m_indexer.stop());
-
+    // Run the indexer outward when the Y button is pressed.
     new JoystickButton(m_driveController, Button.kY.value)
       .whenPressed(() -> m_indexer.outdex(0.4))
       .whenReleased(() -> m_indexer.stop());
 
-    new JoystickButton(m_driveController, Button.kStart.value)
-      .whenPressed(() -> m_intake.collect(0.65))
-      .whenReleased(() -> m_intake.stop());
-
-    new JoystickButton(m_driveController, Button.kBack.value)
+    // Run the intake outward when the X button is pressed.
+    new JoystickButton(m_driveController, Button.kX.value)
       .whenPressed(() -> m_intake.eject(0.65))
       .whenReleased(() -> m_intake.stop());
   }
