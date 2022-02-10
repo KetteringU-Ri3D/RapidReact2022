@@ -37,9 +37,9 @@ public class Drivetrain extends SubsystemBase {
   SparkMaxPIDController m_pidFrontLeft, m_pidRearLeft, m_pidFrontRight, m_pidRearRight;
 
   // Create variables for PID control values.
-  double kP = 0.0, 
+  double kP = 0.5, 
          kI = 0.0,
-         kD = 0.0, 
+         kD = 0.125, 
          kIz = 0.0, 
          kFF = 0.0, 
          kMaxOutput = 1, 
@@ -55,10 +55,10 @@ public class Drivetrain extends SubsystemBase {
     m_motorRearRight.restoreFactoryDefaults();
 
     // Set all motors to Brake mode.
-    m_motorFrontLeft.setIdleMode(IdleMode.kBrake);
-    m_motorFrontRight.setIdleMode(IdleMode.kBrake);
-    m_motorRearLeft.setIdleMode(IdleMode.kBrake);
-    m_motorRearRight.setIdleMode(IdleMode.kBrake);
+    m_motorFrontLeft.setIdleMode(IdleMode.kCoast);
+    m_motorFrontRight.setIdleMode(IdleMode.kCoast);
+    m_motorRearLeft.setIdleMode(IdleMode.kCoast);
+    m_motorRearRight.setIdleMode(IdleMode.kCoast);
 
     // Invert the right motors.
     m_motorFrontRight.setInverted(true);
@@ -143,18 +143,33 @@ public class Drivetrain extends SubsystemBase {
    * driveToPosition - use encoders to drive to a set position.
    * 
    * @param setpoint - ending position to drive to.
+   * @param power - power applied to the drive motors.
    */
-  public void driveToPosition(double setpoint) {
+  public void driveToPosition(double setpoint, double power) {
     // Convert the setpoint to encoder counts.
     double counts = inchesToEncoderCounts(setpoint);
 
-    // Set the position of both front encoders.
-    m_encoderFrontLeft.setPosition(counts);
-    m_encoderFrontRight.setPosition(counts);
+    // // Set the position of both front encoders.
+    // m_encoderFrontLeft.setPosition(counts);
+    // m_encoderFrontRight.setPosition(counts);
 
-    // Set the reference of each PID controller to the setpoint.
-    m_pidFrontLeft.setReference(counts, ControlType.kPosition);
-    m_pidFrontRight.setReference(counts, ControlType.kPosition);
+    // // Set the reference of each PID controller to the setpoint.
+    // m_pidFrontLeft.setReference(counts, ControlType.kPosition);
+    // m_pidFrontRight.setReference(counts, ControlType.kPosition);
+
+    System.out.println("ENCODER POSITION: " + m_encoderFrontLeft.getPosition());
+
+    arcadeDrive(power, 0);
+    if (m_encoderFrontLeft.getPosition() >= inchesToEncoderCounts(counts)) {
+      arcadeDrive(0, 0);
+    }
+
+    // while(m_encoderFrontLeft.getPosition() < inchesToEncoderCounts(counts)) {
+    //   arcadeDrive(0.25, 0);
+      
+      
+    // }
+    
   }
 
   /**
@@ -196,7 +211,7 @@ public class Drivetrain extends SubsystemBase {
     double countsPerInch = encoderCountsPerRev / circumference;
 
     // Calculate the final answer, which is the number of encoder counts required.
-    double result = inch * countsPerInch;
+    double result = countsPerInch / inch;
 
     // Send the value back.
     return result;

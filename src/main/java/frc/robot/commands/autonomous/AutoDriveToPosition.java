@@ -13,16 +13,18 @@ public class AutoDriveToPosition extends CommandBase {
   // Create an object for the drivetrain.
   private final Drivetrain m_drivetrain;
 
-  // Create a DoubleSupplier for the setpoint.
+  // Create DoubleSuppliers for the setpoint and power.
   private final DoubleSupplier m_setpoint;
+  private final DoubleSupplier m_power;
   
   /** Creates a new AutonomousDriveForward. */
-  public AutoDriveToPosition(Drivetrain drivetrain, DoubleSupplier setpoint) {
+  public AutoDriveToPosition(Drivetrain drivetrain, DoubleSupplier setpoint, DoubleSupplier power) {
     // Use the Drivetrain subsystem to gain access to its commands.
     m_drivetrain = drivetrain;
 
-    // Set the setpoint.
+    // Set the setpoint and power.
     m_setpoint = setpoint;
+    m_power = power;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_drivetrain);
@@ -39,7 +41,7 @@ public class AutoDriveToPosition extends CommandBase {
   @Override
   public void execute() {
     // Call the driveToPosition method.
-    m_drivetrain.driveToPosition(m_setpoint.getAsDouble());
+    m_drivetrain.driveToPosition(m_setpoint.getAsDouble(), m_power.getAsDouble());
   }
 
   // Called once the command ends or is interrupted.

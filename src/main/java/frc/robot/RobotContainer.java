@@ -35,7 +35,8 @@ public class RobotContainer {
   private final Climber m_climber = new Climber();
 
   // Create an AutoDriveToPosition command to be used in autonomous.
-  private final AutoDriveToPosition m_autoDriveToPosition = new AutoDriveToPosition(m_drivetrain, () -> -90);
+  // private final AutoDriveToPosition m_autoDriveToPosition = new AutoDriveToPosition(m_drivetrain, () -> -90);
+  private final AutoDriveToPosition m_autoDriveToPosition = new AutoDriveToPosition(m_drivetrain, () -> 20, () -> 0.5);
 
   // Define an XboxController object to control the robot with.
   private final XboxController m_driveController = new XboxController(Constants.DRIVE_CONTROLLER);
