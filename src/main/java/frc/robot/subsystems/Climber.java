@@ -35,7 +35,7 @@ public class Climber extends SubsystemBase {
    */
   public void raise(double power) {
     // Apply voltage to the motor.
-    m_motor.set(-power);
+    m_motor.set(power);
 
     // Read the encoder value.
     m_encoder.getPosition();
@@ -48,7 +48,7 @@ public class Climber extends SubsystemBase {
    */
   public void lower(double power) {
     // Apply voltage to the motor.
-    m_motor.set(power);
+    m_motor.set(-power);
 
     // Read the encoder value.
     m_encoder.getPosition();

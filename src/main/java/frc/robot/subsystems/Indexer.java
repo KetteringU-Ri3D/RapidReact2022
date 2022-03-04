@@ -39,7 +39,7 @@ public class Indexer extends SubsystemBase {
     // Apply voltage to the motors.
     m_motorSide.set(ControlMode.PercentOutput, power * 2);
     m_motorMid.set(ControlMode.PercentOutput, power);
-    m_motorUp.set(ControlMode.PercentOutput, power);
+    m_motorUp.set(ControlMode.PercentOutput, power * 0.75);
     m_motorTop.set(ControlMode.PercentOutput, power * 1.75);
   }
 
@@ -52,7 +52,7 @@ public class Indexer extends SubsystemBase {
     // Apply voltage to the motors.
     m_motorSide.set(ControlMode.PercentOutput,-power * 2);
     m_motorMid.set(ControlMode.PercentOutput, -power);
-    m_motorUp.set(ControlMode.PercentOutput, -power);
+    m_motorUp.set(ControlMode.PercentOutput, -power * 0.75);
     m_motorTop.set(ControlMode.PercentOutput, -power * 1.75);
   }
 

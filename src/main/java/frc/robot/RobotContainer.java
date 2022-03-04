@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.commands.autonomous.AutoDriveToPosition;
+import frc.robot.commands.autonomous.AutoShootThenDrive;
 import frc.robot.commands.drivetrain.ArcadeDrive;
 import frc.robot.commands.drivetrain.CurvatureDrive;
 import frc.robot.commands.drivetrain.TankDrive;
@@ -36,7 +37,8 @@ public class RobotContainer {
 
   // Create an AutoDriveToPosition command to be used in autonomous.
   // private final AutoDriveToPosition m_autoDriveToPosition = new AutoDriveToPosition(m_drivetrain, () -> -90);
-  private final AutoDriveToPosition m_autoDriveToPosition = new AutoDriveToPosition(m_drivetrain, () -> 20, () -> 0.5);
+  private final AutoDriveToPosition m_autoDriveToPosition = new AutoDriveToPosition(m_drivetrain, () -> 90, () -> 0.5);
+  private final AutoShootThenDrive m_autoShootThenDrive = new AutoShootThenDrive(m_drivetrain, m_shooter, m_indexer, m_intake);
 
   // Define an XboxController object to control the robot with.
   private final XboxController m_driveController = new XboxController(Constants.DRIVE_CONTROLLER);
@@ -93,7 +95,7 @@ public class RobotContainer {
 
     // Spin the shooter wheels up when the right bumper is pressed.
     new JoystickButton(m_driveController, Button.kRightBumper.value)
-      .whenPressed(() -> m_shooter.spinUp(0.75))
+      .whenPressed(() -> m_shooter.spinUp(0.875))
       .whenReleased(() -> m_shooter.stop());
 
     // Run the intake and indexer inward when the left bumper is pressed.
@@ -103,8 +105,8 @@ public class RobotContainer {
 
     // Run the indexer outward when the Y button is pressed.
     new JoystickButton(m_driveController, Button.kY.value)
-      .whenPressed(() -> m_indexer.outdex(0.4))
-      .whenReleased(() -> m_indexer.stop());
+      .whenPressed(() -> spinDownAndOutdex())
+      .whenReleased(() -> stopSpinDownAndOutdex());
 
     // Run the intake outward when the X button is pressed.
     new JoystickButton(m_driveController, Button.kX.value)
@@ -129,12 +131,29 @@ public class RobotContainer {
   }
 
   /**
+   * spinDownAndOutdex - run the spin down and outdex commands.
+   */
+  public void spinDownAndOutdex() {
+    m_shooter.spinDown(0.1);
+    m_indexer.outdex(0.4);
+  }
+
+  /**
+   * sotpCollectAndIndex - stop the collect and index commands.
+   */
+  public void stopSpinDownAndOutdex() {
+    m_shooter.stop();
+    m_indexer.stop();
+  }
+
+  /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
     // The chosen command will run in autonomous
-    return m_autoDriveToPosition;
+    // return m_autoDriveToPosition;
+    return m_autoShootThenDrive;
   }
 }
