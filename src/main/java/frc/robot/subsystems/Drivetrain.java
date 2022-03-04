@@ -135,7 +135,7 @@ public class Drivetrain extends SubsystemBase {
    * stopDrive - stops all motors on the drivetrain.
    */
   public void stop() {
-    // Call CANSparkMax's stopMotor.
+    // Call DifferentialDrive's stopMotor method.
     m_drive.stopMotor();
   }
 

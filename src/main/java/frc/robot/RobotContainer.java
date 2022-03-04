@@ -36,7 +36,6 @@ public class RobotContainer {
   private final Climber m_climber = new Climber();
 
   // Create an AutoDriveToPosition command to be used in autonomous.
-  // private final AutoDriveToPosition m_autoDriveToPosition = new AutoDriveToPosition(m_drivetrain, () -> -90);
   private final AutoDriveToPosition m_autoDriveToPosition = new AutoDriveToPosition(m_drivetrain, () -> 90, () -> 0.5);
   private final AutoShootThenDrive m_autoShootThenDrive = new AutoShootThenDrive(m_drivetrain, m_shooter, m_indexer, m_intake);
 
@@ -139,7 +138,7 @@ public class RobotContainer {
   }
 
   /**
-   * sotpCollectAndIndex - stop the collect and index commands.
+   * stopCollectAndIndex - stop the collect and index commands.
    */
   public void stopSpinDownAndOutdex() {
     m_shooter.stop();
